@@ -77,6 +77,8 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.scoreboard.prep_score()
+            self.scoreboard.prep_level()
+            self.scoreboard.prep_ships()
             # Reset aliens, bullets and ship.
             self._reset_scenario()
             # Hide the mouse cursor.
@@ -166,7 +168,7 @@ class AlienInvasion:
         alien_width, alien_height = alien.rect.size
         alien.x = alien_width + 2 * alien_width * alien_number
         alien.rect.x = alien.x
-        alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number
+        alien.rect.y = 1.5 * alien.rect.height + 2 * alien.rect.height * row_number
         self.aliens.add(alien)
 
     def _update_aliens(self):
@@ -188,8 +190,9 @@ class AlienInvasion:
         """Respond to the ship being hit by an alien."""
 
         if self.stats.ships_left > 0:
-            # Decrement ships_left.
+            # Decrement ships_left, and update scoreboard.
             self.stats.ships_left -= 1
+            self.scoreboard.prep_ships()
 
             self._reset_scenario()
         else:
